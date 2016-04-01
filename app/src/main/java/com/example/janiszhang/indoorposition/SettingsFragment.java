@@ -86,13 +86,6 @@ public class SettingsFragment extends Fragment {
 
         }
 
-//        private static float sStepThreshold = 0.65f;
-//        private static float sCo_k_wein = 45f;
-//        private static int sStepObtainDelaySec = 0;
-//        private static int sTotalNum = 5;
-//        private static long sInterval_ms = 1000;
-//        private static String sSsid = "E523,Dijkstra,Dijkstra_5G,E2-423,E323";
-
         @Override
         public void afterTextChanged(Editable s) {
             String text = s.toString();
@@ -119,22 +112,6 @@ public class SettingsFragment extends Fragment {
                 }
             }
         }
-    }
-
-    public EditText getSsidEditText() {
-        return mSsidEditText;
-    }
-
-    public static float getStepThreshold() {
-        return sStepThreshold;
-    }
-
-    public static float getCo_k_wein() {
-        return sCo_k_wein;
-    }
-
-    public static int getStepObtainDelaySec() {
-        return sStepObtainDelaySec;
     }
 
     public static int getTotalNum() {

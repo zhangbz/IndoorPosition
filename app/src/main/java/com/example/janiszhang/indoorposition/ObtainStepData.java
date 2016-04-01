@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -35,11 +36,11 @@ public class ObtainStepData implements SensorEventListener{
     float mMaxVal = 0f, mMinVal = 0f, mStepLength = 0f;
     int maLength = 5, stepState = 0, stepCount = 0;
     int degreeDisplay;
-    static float[] initPoint = {1150 / 4, (1875 / 5) * 3};
-    static float[] curCoordsOfStep = {1150 / 4, (1875 / 5) * 3};
+    static float[] initPoint = {230, 640};
+    static float[] curCoordsOfStep = {230, 640};
     static ArrayList<CoordPoint> points = new ArrayList<>();
     DecimalFormat decimalF = new DecimalFormat("#.00");
-    float offset, degree;
+    float offset = 20, degree;
 
 
     public ObtainStepData(Context context, TextView stepCount, TextView stepLength, TextView degree, TextView coordinate) {
@@ -49,7 +50,7 @@ public class ObtainStepData implements SensorEventListener{
         this.tvdegree = degree;
         this.tvcoordinate = coordinate;
         loadSystemService();
-    }
+}
 
     private void loadSystemService() {
         mSensorManager = (SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
@@ -149,16 +150,37 @@ public class ObtainStepData implements SensorEventListener{
         boolean sucess = SensorManager.getRotationMatrix(R, I, mAccValues, mMagValues);
         if (sucess) {
             SensorManager.getOrientation(R, mValues);
+            Log.i("zhangbz5", "degree1 = " + Math.toDegrees(mValues[0]));
             degree = (int)(Math.toDegrees(mValues[0]) + 360) % 360; // translate into (0, 360).
-            degree = ((int)(degree + 2)) / 5 * 5; // the value of degree is multiples of 5.
+            Log.i("zhangbz5", "degree2 = " + degree);
+            degree = ((int)(degree /*+ 2*/)) / 5 * 5; // the value of degree is multiples of 5.
+            Log.i("zhangbz5", "degree3 = " + degree);
+            Log.i("zhangbz5", "offset = " + offset);
             if (offset == 0) {
                 degreeDisplay = (int) degree;
             } else {
                 degreeDisplay = roomDirection(degree, offset); // user-defined room direction.
             }
+            Log.i("zhangbz5", "degreeDisplay = " + degreeDisplay);
             stepDegreeViewShow();
         }
     }
+
+    /**
+     04-01 10:22:58.027 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degree = 295.0
+     04-01 10:22:58.027 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: offset = 0.0
+     04-01 10:22:58.027 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degreeDisplay = 295
+     04-01 10:22:58.091 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degree = 295.0
+     04-01 10:22:58.091 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: offset = 0.0
+     04-01 10:22:58.091 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degreeDisplay = 295
+
+
+     04-01 10:24:04.016 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degree = 290.0
+     04-01 10:24:04.016 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: offset = 20.0
+     04-01 10:24:04.016 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degreeDisplay = 270
+     04-01 10:24:04.075 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: degree = 290.0
+     04-01 10:24:04.075 8957-8957/com.example.janiszhang.indoorposition I/zhangbz5: offset = 20.0
+     */
 
     private void stepDegreeViewShow() {
 		/*
@@ -199,9 +221,9 @@ public class ObtainStepData implements SensorEventListener{
 		/*
 		 * initialize and correct the step parameters.
 		 */
-        offset = degree - 270;
-        curCoordsOfStep[0] = 1150 / 4;
-        curCoordsOfStep[1] = (1875 / 5) * 3;
+        offset = 20;//degree - 270;
+        curCoordsOfStep[0] = 230;
+        curCoordsOfStep[1] = 640;
         stepCount = 0;
         mStepLength = 0;
     }

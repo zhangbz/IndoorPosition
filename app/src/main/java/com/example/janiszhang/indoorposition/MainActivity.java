@@ -7,15 +7,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 /**
@@ -40,6 +35,7 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
     private ShowPositionFragment mShowPositionFragment;
     private SettingsFragment mSettingsFragment;
 
+    //返回键
     final long backSpaceTimeIntervalMilliSecond = 1000;
     long lastTimeclickBack = 0;
 
@@ -54,9 +50,9 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
-//        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-//        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
 
         initView();
@@ -172,7 +168,7 @@ public class MainActivity extends FragmentActivity implements  View.OnClickListe
             case R.id.bt_show_position:
 //                mShowPositionButton.setCompoundDrawablesRelativeWithIntrinsicBounds(0, R.drawable.location_50_mygreen,0,0);
                 //openWifi();
-                ObtainWasproCoords.correctWaspro();
+//                ObtainWasproCoords.correctWaspro();
                 mShowPositionButton.setTextColor(getResources().getColor(R.color.my_green));
                 initFragment(1);
                 break;

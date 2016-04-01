@@ -121,10 +121,8 @@ public class WifiScanFragment extends android.support.v4.app.Fragment {
 
         try {
             // read all offline RSS data
-            Log.i("zhangbz", "定位??");
             ObtainRssCoords.readOffLineRssData(rssFile, rssAndCoords);
         } catch (IOException e) {
-            Log.i("zhangbz", "这里是不是有问题??");
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -165,7 +163,8 @@ public class WifiScanFragment extends android.support.v4.app.Fragment {
                         curTouchCoords = convertTouchCoordinates(touchCoords);
                         mCanvas.drawBitmap(mMark, curTouchCoords[0], curTouchCoords[1], mPaint);
                         mIndoorMap.setImageBitmap(mResultBitmap);
-                        Log.i("zhangbz","curTouchCoords[0] = " + curTouchCoords[0] + " ; curTouchCoords[1] = " + curTouchCoords[1]);
+                        Log.i("zhangbz", "curTouchCoords[0] = " + curTouchCoords[0] + " ; curTouchCoords[1] = " + curTouchCoords[1]);
+                        Log.i("zhangbz", "touchCoords[0] = " + touchCoords[0] + " ; touchCoords[1] = " + touchCoords[1]);
                     }
                 });
             }

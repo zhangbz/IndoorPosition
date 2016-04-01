@@ -1,13 +1,11 @@
 package com.example.janiszhang.indoorposition;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,16 +13,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -48,20 +41,22 @@ public class ShowPositionFragment extends Fragment{
     private Button mResetButton;
     private Button mStopButton;
 
-    static int[] newCoords            = new int[2];
-    static int[] curTouchCoords       = {0, 0};
-    static float[] myCoords           = new float[2];
+    static int[] newCoords = new int[2];
+    static int[] curTouchCoords = {0, 0};
+    static float[] myCoords = new float[2];
 
     // Time variables
     final long updateItemMilliTime = 40;
     private Timer mTimer;
     TimerTask mTimetask;
 
-    String rssFile                = "/2Rss/rss.txt";
-    static ArrayList<Map.Entry<float[], float[]>> rssAndCoords = new ArrayList<Map.Entry<float[], float[]>>();
+//    String rssFile = "/2Rss/rss.txt";
+//    static ArrayList<Map.Entry<float[], float[]>> rssAndCoords = new ArrayList<Map.Entry<float[], float[]>>();
 
-    WifiManager wifiMg;
-    ObtainRssData obtainRssData;
+//    WifiManager wifiMg;
+//    ObtainRssData obtainRssData;
+
+
 //    @Override
 //    public void onCreate(@Nullable Bundle savedInstanceState) {
 //        super.onCreate(savedInstanceState);
@@ -79,8 +74,6 @@ public class ShowPositionFragment extends Fragment{
 //        mMark = getResizedBitmap(mMark, 50, 24);
 
         mResultBitmap = Bitmap.createBitmap(mBackgroundMap.getWidth(), mBackgroundMap.getHeight(), mBackgroundMap.getConfig());
-        Log.i("zhangbz", "bitmap width = " + mBackgroundMap.getWidth() + ", height = " + mBackgroundMap.getHeight());// bitmap width = 1149, height = 1875
-        Log.i("zhangbz", "imageview width = " + mIndoorMap.getWidth() + ", height = " + mIndoorMap.getHeight());// bitmap width = 1149, height = 1875
 
         mCanvas = new Canvas(mResultBitmap);
         mPaint = new Paint();
@@ -89,15 +82,24 @@ public class ShowPositionFragment extends Fragment{
         mPaint.setStrokeWidth(7);
 
         mCanvas.drawBitmap(mBackgroundMap, new Matrix(), null);
-        mCanvas.drawBitmap(mMark, 0, 0, mPaint);//暂定测试用起始点
+//        mCanvas.drawBitmap(mMark, 165, 1090, mPaint);//暂定测试用起始点
         mIndoorMap.setImageBitmap(mResultBitmap);
+
 
         mSetpCount = (TextView) view.findViewById(R.id.text_view_step_count);
         mStepLength = (TextView) view.findViewById(R.id.text_view_step_length);
         mStepDegree = (TextView) view.findViewById(R.id.text_view_step_degree);
         mStepCoordinate = (TextView) view.findViewById(R.id.text_view_step_coordinate);
 
+        Log.i("zhangbz2", "bitmap width = " + mBackgroundMap.getWidth() + ", height = " + mBackgroundMap.getHeight());// bitmap width = 1149, height = 1875 //lg:bitmap width = 766, height = 1250
+        Log.i("zhangbz2","indoorMap right = " + mIndoorMap.getRight() + ", bottom = " + mIndoorMap.getBottom());
+        Log.i("zhangbz2", "canvas width = " + mCanvas.getWidth() + ", height = " + mCanvas.getHeight());
+        /**
+         * 04-01 09:33:55.742 2527-2527/com.example.janiszhang.indoorposition I/zhangbz2: bitmap width = 766, height = 1250
+         04-01 09:33:55.742 2527-2527/com.example.janiszhang.indoorposition I/zhangbz2: indoorMap width = 0, height = 0
+         04-01 09:33:55.742 2527-2527/com.example.janiszhang.indoorposition I/zhangbz2: canvas width = 766, height = 1250
 
+         */
 //        wifiMg = (WifiManager)getActivity().getSystemService(Context.WIFI_SERVICE);
 //        obtainRssData = new ObtainRssData(wifiMg/*, MainActivity.this*/);
 //        openWifi();
@@ -137,7 +139,7 @@ public class ShowPositionFragment extends Fragment{
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ObtainWasproCoords.correctWaspro();
+//                ObtainWasproCoords.correctWaspro();
                 mObtainStepData.correctStep();
                 mObtainStepData.clearPoints();
                 mObtainStepData.initPoints();
@@ -232,8 +234,18 @@ public class ShowPositionFragment extends Fragment{
 		/*
 		 * float[] : convert coordinate to fit on the screen of mobile.
 		 */
+        Log.i("zhangbz3", "coors[0] = " + coors[0] + ", coors[1] = " + coors[1]);
+        Log.i("zhangbz3","indoorMap right = " + mIndoorMap.getRight() + ", bottom = " + mIndoorMap.getBottom());
+        Log.i("zhangbz3", "canvas width = " + mCanvas.getWidth() + ", height = " + mCanvas.getHeight());
         newCoords[0] = (int)(coors[0] * ((float) mCanvas.getWidth() / mIndoorMap.getRight()));
         newCoords[1] = (int)(coors[1] * ((float) mCanvas.getHeight() / mIndoorMap.getBottom()));
+        Log.i("zhangbz3", "newCoors[0] = " + newCoords[0] + ", newCoors[1] = " + newCoords[1]);
+        /**
+         * 04-01 09:44:10.816 17041-17041/com.example.janiszhang.indoorposition I/zhangbz3: coors[0] = 230.0, coors[1] = 640.0
+         04-01 09:44:10.816 17041-17041/com.example.janiszhang.indoorposition I/zhangbz3: indoorMap right = 768, bottom = 786   //这里是问题所在
+         04-01 09:44:10.816 17041-17041/com.example.janiszhang.indoorposition I/zhangbz3: canvas width = 766, height = 1250
+         04-01 09:44:10.817 17041-17041/com.example.janiszhang.indoorposition I/zhangbz3: newCoors[0] = 229, newCoors[1] = 1017
+         */
         return newCoords;
     }
 
@@ -247,9 +259,9 @@ public class ShowPositionFragment extends Fragment{
         return new CoordPoint(xtmp, ytmp);
     }
 
-    public void openWifi() {
-        if(!wifiMg.isWifiEnabled()) {
-            wifiMg.setWifiEnabled(true);
-        }
-    }
+//    public void openWifi() {
+//        if(!wifiMg.isWifiEnabled()) {
+//            wifiMg.setWifiEnabled(true);
+//        }
+//    }
 }
